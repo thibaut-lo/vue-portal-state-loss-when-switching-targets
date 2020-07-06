@@ -8,10 +8,9 @@
 
       <b-row>
         <b-col>
-          <h1>{{title}}</h1>
+          <h1>Vue-Grid-Layout: Keep State while v-show Toggle</h1>
           <p>
-            See
-            <a href="https://github.com/jbaysolutions/vue-grid-layout/issues/333">Document how to "maximize" a GridItem... · Issue #333 · jbaysolutions/vue-grid-layout</a>
+
           </p>
         </b-col>
       </b-row>
@@ -20,12 +19,25 @@
         <b-col>
           This is where my portal parant container lives. If you don't see anything yellow, then all portal content gets teleported
           <!-- <keep-alive> -->
-          <portal :to="'grid-item-'+selectedTarget">
+          <portal to="grid-item-1">
 
             <!-- <keep-alive> -->
-              <div class="yellow">Teleported Input Box 
+              <div class="yellow" v-show="isGridShown">
+
+                Teleported Input Box 
                 <!-- <keep-alive> -->
-                  <input width="40">
+                  <input v-model.trim="inputMsg" width="40">
+                <!-- </keep-alive> -->
+              </div>
+            <!-- </keep-alive> -->
+          </portal>
+
+          <portal to="dock-item-1">
+
+            <!-- <keep-alive> -->
+              <div class="red"  v-show="!isGridShown">Teleported Input Box 
+                <!-- <keep-alive> -->
+                  That's what appears in the dock for View-Item 1 with Input Msg {{inputMsg}}
                 <!-- </keep-alive> -->
               </div>
             <!-- </keep-alive> -->
@@ -37,23 +49,13 @@
               <b-form-radio
                 v-model="selectedTarget"
                 name="some-radios"
-                value="0"
-              >Option 0</b-form-radio>
+                value="Grid"
+              >Item 1 in Grid</b-form-radio>
               <b-form-radio
                 v-model="selectedTarget"
                 name="some-radios"
-                value="1"
-              >Option 1</b-form-radio>
-              <b-form-radio
-                v-model="selectedTarget"
-                name="some-radios"
-                value="2"
-              >Option 2</b-form-radio>
-              <b-form-radio
-                v-model="selectedTarget"
-                name="some-radios"
-                value="NAN"
-              >Option Name of the Target don't exist</b-form-radio>
+                value="Dock"
+              >Item 1 in Dock</b-form-radio>
             </b-form-group>
 
             <div class="mt-3">Selected: <strong>{{ selectedTarget }}</strong></div>
@@ -118,6 +120,13 @@
           </grid-item>
         </grid-layout>
       </div>
+
+      <b-row>
+        <b-col class="dock">
+          <h1>Dock</h1>
+          <portal-target name="dock-item-1"></portal-target>
+        </b-col>
+      </b-row>
     </b-container>
 
   </div>
@@ -148,14 +157,19 @@ export default {
       ],
       maximizeID: null,
       show: [1,2,3],
-      selectedTarget: null
+      selectedTarget: "Grid",
+      inputMsg: "",
     };
   },
+
+  computed: {
+    isGridShown() {
+      return (this.selectedTarget === "Grid")
+    }
+  },
   methods: {},
-  mounted() {
-    this.title = "GridLayout with Vue Portal & Grid-Layout: Test Local State Loss";
-  }
 };
+
 </script>
 
 <style lang="scss" scoped>
