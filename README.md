@@ -1,5 +1,16 @@
 # Vue-Portal-Grid-Layout
 
+
+## Branches
+
+Each branch is a demo:
+```
+* master = v-show-toggle-keeps-local-state
+  switching-targets-looses-local-state
+  v-show-toggle-keeps-local-state
+  vue3 // don't work
+ ```
+
 ## Project setup
 ```
 yarn install
