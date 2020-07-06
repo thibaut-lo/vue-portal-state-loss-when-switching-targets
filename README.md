@@ -8,7 +8,8 @@ Each branch is a demo:
 * master = v-show-toggle-keeps-local-state
   switching-targets-looses-local-state
   v-show-toggle-keeps-local-state
-  vue3 // don't work
+  vue3-teleport-dont-work-withèvue-grid-layout // don't work
+  minimize-thru-transform-scale-0
  ```
 
 ## Project setup

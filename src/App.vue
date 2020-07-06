@@ -22,24 +22,33 @@
           <portal to="grid-item-1">
 
             <!-- <keep-alive> -->
-              <div class="yellow" v-show="isGridShown">
+            <div
+              class="yellow"
+              v-show="isGridShown"
+            >
 
-                Teleported Input Box 
-                <!-- <keep-alive> -->
-                  <input v-model.trim="inputMsg" width="40">
-                <!-- </keep-alive> -->
-              </div>
+              Teleported Input Box
+              <!-- <keep-alive> -->
+              <input
+                v-model.trim="inputMsg"
+                width="40"
+              >
+              <!-- </keep-alive> -->
+            </div>
             <!-- </keep-alive> -->
           </portal>
 
           <portal to="dock-item-1">
 
             <!-- <keep-alive> -->
-              <div class="red"  v-show="!isGridShown">Teleported Input Box 
-                <!-- <keep-alive> -->
-                  That's what appears in the dock for View-Item 1 with Input Msg {{inputMsg}}
-                <!-- </keep-alive> -->
-              </div>
+            <div
+              class="red"
+              v-show="!isGridShown"
+            >Teleported Input Box
+              <!-- <keep-alive> -->
+              That's what appears in the dock for View-Item 1 with Input Msg {{inputMsg}}
+              <!-- </keep-alive> -->
+            </div>
             <!-- </keep-alive> -->
           </portal>
           <!-- </keep-alive> -->
@@ -76,13 +85,26 @@
             :disabled="!maximizeID"
             @click.prevent="maximizeID=null"
           >Restore</button>
+
+          <button
+            class="btn btn-primary p-2 m-2"
+            :disabled="minimizeID || maximizeID"
+            @click.prevent="minimize"
+          >Minimize item 1</button>
+          <button
+            class="btn btn-primary p-2 m-2"
+            :disabled="!minimizeID"
+            @click.prevent="restoreMinimized"
+          >Restore min</button>
           Maximized: {{maximizeID || "none"}}
+          and Minimized: {{minimizeID || "none"}}
 
         </b-col>
       </b-row>
 
       <div class="gridContainer">
         <grid-layout
+          ref="gridlayout"
           :layout="layout"
           :col-num="12"
           :row-height="30"
@@ -98,6 +120,7 @@
           <grid-item
             v-for="item in layout"
             :key="item.i"
+            :ref="'grid-item-'+item.i"
             :x="item.x"
             :y="item.y"
             :w="item.w"
@@ -106,7 +129,9 @@
             class="gridItem"
             :class="{
                      maximized: maximizeID == item.i,
-                     hidden: maximizeID && maximizeID != item.i
+                     hidden: (maximizeID && maximizeID != item.i),
+                     minimized: minimizeID == item.i,
+
                   }"
           >{{item.i}}
 
@@ -149,27 +174,52 @@ export default {
   },
   data() {
     return {
-      title: "",
       layout: [
         { x: 0, y: 0, w: 2, h: 4, i: "0" },
         { x: 2, y: 0, w: 2, h: 4, i: "1" },
-        { x: 4, y: 0, w: 2, h: 4, i: "2" }
+        { x: 4, y: 0, w: 2, h: 4, i: "2" },
+        { x: 0, y: 4, w: 2, h: 4, i: "3" },
+        { x: 2, y: 4, w: 2, h: 4, i: "4" },
+        { x: 4, y: 4, w: 2, h: 4, i: "5" }
       ],
       maximizeID: null,
-      show: [1,2,3],
       selectedTarget: "Grid",
-      inputMsg: "",
-    };
+      inputMsg: ""    };
   },
 
   computed: {
     isGridShown() {
-      return (this.selectedTarget === "Grid")
+      return this.selectedTarget === "Grid";
+    },
+    minimizeID() {
+      return this.isGridShown ? null: 1 ; 
     }
   },
-  methods: {},
-};
+  methods: {
+    minimize() {
+      let id = 1;
+      this.minimizeID = id; // css transform
+      this.selectedTarget = "Dock" // move content
 
+      // console.log(this.$refs["grid-item-" + id]);
+      // console.log("layout", this.$refs.gridlayout);
+      // // this.$refs.gridlayout.layoutUpdate();
+      // //  this.$refs["grid-item-" + id].autoSize();
+      // console.log("this.$refs", this.$refs);
+      // console.log(
+      //   'this.$refs["grid-item-" + id].autoSize',
+      //   typeof this.$refs["grid-item-" + id][0].autoSize,
+      //   this.$refs["grid-item-" + id][0].autoSize
+      // );
+      //this.$refs["grid-item-" + id][0].autoSize();
+    },
+
+    restoreMinimized() {
+      this.minimizeID = null; // css transform
+      this.selectedTarget = "Grid"
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -230,6 +280,12 @@ input {
   transform: inherit !important;
   height: 100% !important;
   width: 100% !important;
+}
+
+.gridItem.minimized {
+  transform: scale(0) !important;
+  height: 0 !important;
+  width: 0 !important;
 }
 
 .fill {
