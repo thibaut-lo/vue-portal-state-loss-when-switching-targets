@@ -4,66 +4,112 @@
     class="fill"
   >
 
-    <b-container class="fill">
+    <div class="container fill">
 
-      <b-row>
-        <b-col>
+      <div class="row">
+        <div class="col">
           <h1>{{title}}</h1>
           <p>
             See
             <a href="https://github.com/jbaysolutions/vue-grid-layout/issues/333">Document how to "maximize" a GridItem... · Issue #333 · jbaysolutions/vue-grid-layout</a>
           </p>
-        </b-col>
-      </b-row>
+        </div>
+      </div>
 
-      <b-row>
-        <b-col>
+      <div class="row">
+        <div class="col">
           This is where my portal parant container lives. If you don't see anything yellow, then all portal content gets teleported
           <!-- <keep-alive> -->
           <portal :to="'grid-item-'+selectedTarget">
 
             <!-- <keep-alive> -->
-              <div class="yellow">Teleported Input Box 
-                <!-- <keep-alive> -->
-                  <input width="40">
-                <!-- </keep-alive> -->
-              </div>
+            <div class="yellow">Teleported Input Box
+              <!-- <keep-alive> -->
+              <input width="40">
+              <!-- </keep-alive> -->
+            </div>
             <!-- </keep-alive> -->
           </portal>
           <!-- </keep-alive> -->
 
           <div>
-            <b-form-group label="Individual radios">
-              <b-form-radio
+            <div
+              class="form-group"
+              label="Individual radios"
+            >
+              <input
+                class="form-check-input"
                 v-model="selectedTarget"
+                type="radio"
+                id="inlineRadio1"
                 name="some-radios"
                 value="0"
-              >Option 0</b-form-radio>
-              <b-form-radio
+              > <label
+                class="form-check-label"
+                for="inlineRadio1"
+              >
+                Option 0
+              </label></div>
+            <div
+              class="form-group"
+              label="Individual radios"
+            >
+              <input
+                class="form-check-input"
                 v-model="selectedTarget"
+                type="radio"
+                id="inlineRadio2"
                 name="some-radios"
                 value="1"
-              >Option 1</b-form-radio>
-              <b-form-radio
+              > <label
+                class="form-check-label"
+                for="inlineRadio2"
+              >
+                Option 1
+              </label></div>
+            <div
+              class="form-group"
+              label="Individual radios"
+            >
+              <input
+                class="form-check-input"
                 v-model="selectedTarget"
+                type="radio"
+                id="inlineRadio3"
                 name="some-radios"
                 value="2"
-              >Option 2</b-form-radio>
-              <b-form-radio
+              > <label
+                class="form-check-label"
+                for="inlineRadio3"
+              >
+                Option 2
+              </label></div>
+            <div
+              class="form-group"
+              label="Individual radios"
+            >
+              <input
+                class="form-check-input"
                 v-model="selectedTarget"
+                type="radio"
+                id="inlineRadio4"
                 name="some-radios"
                 value="NAN"
-              >Option Name of the Target don't exist</b-form-radio>
-            </b-form-group>
-
-            <div class="mt-3">Selected: <strong>{{ selectedTarget }}</strong></div>
+              > <label
+                class="form-check-label"
+                for="inlineRadio4"
+              >
+                Unknown target portal
+              </label></div>
           </div>
 
-        </b-col>
-      </b-row>
+          <div class="mt-3">Selected: <strong>{{ selectedTarget }}</strong></div>
+        </div>
 
-      <b-row>
-        <b-col class="d-flex justify-content-center align-items-center">
+      </div>
+
+      <div class="row">
+        <div class="d-flex justify-content-center align-items-center">
           <button
             class="btn btn-primary p-2 m-2"
             :disabled="maximizeID"
@@ -76,50 +122,50 @@
           >Restore</button>
           Maximized: {{maximizeID || "none"}}
 
-        </b-col>
-      </b-row>
+        </div>
 
-      <div class="gridContainer">
-        <grid-layout
-          :layout="layout"
-          :col-num="12"
-          :row-height="30"
-          :is-draggable="! maximizeID"
-          :is-resizable="! maximizeID"
-          :is-mirrored="false"
-          :vertical-compact="true"
-          :margin="[10, 10]"
-          :use-css-transforms="true"
-          class="gridLayout"
-          :class="{maximized: maximizeID}"
-        >
-          <grid-item
-            v-for="item in layout"
-            :key="item.i"
-            :x="item.x"
-            :y="item.y"
-            :w="item.w"
-            :h="item.h"
-            :i="item.i"
-            class="gridItem"
-            :class="{
+        <div class="gridContainer">
+          <grid-layout
+            :layout="layout"
+            :col-num="12"
+            :row-height="30"
+            :is-draggable="! maximizeID"
+            :is-resizable="! maximizeID"
+            :is-mirrored="false"
+            :vertical-compact="true"
+            :margin="[10, 10]"
+            :use-css-transforms="true"
+            class="gridLayout"
+            :class="{maximized: maximizeID}"
+          >
+            <grid-item
+              v-for="item in layout"
+              :key="item.i"
+              :x="item.x"
+              :y="item.y"
+              :w="item.w"
+              :h="item.h"
+              :i="item.i"
+              class="gridItem"
+              :class="{
                      maximized: maximizeID == item.i,
                      hidden: maximizeID && maximizeID != item.i
                   }"
-          >{{item.i}}
+            >{{item.i}}
 
-            <portal-target
-              class="d-flex"
-              :name="'grid-item-'+item.i"
-            >
+              <portal-target
+                class="d-flex"
+                :name="'grid-item-'+item.i"
+              >
 
-            </portal-target>
+              </portal-target>
 
-          </grid-item>
-        </grid-layout>
+            </grid-item>
+          </grid-layout>
+        </div>
       </div>
-    </b-container>
 
+    </div>
   </div>
 </template>
 
